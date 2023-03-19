@@ -29,7 +29,7 @@ pub struct Random {
 }
 
 impl Random {
-    pub fn new() -> Result<Self, ErrorRandom> {
+    fn new() -> Result<Self, ErrorRandom> {
         match OS {
             "windows" => Err(ErrorRandom::OSError("Not implemented for Windows".to_string())), 
             "android" => Err(ErrorRandom::OSError("Not implemented for Android".to_string())),
@@ -45,14 +45,40 @@ impl Random {
         Ok(buffer[0])
     }
 
-    pub fn random(self: &Self) -> u8 {
+    fn random(self: &Self) -> u8 {
         self.random
     }
+
+    pub fn new_u8() -> Result<u8, ErrorRandom> {
+        Ok(Self::new()?.random())
+    }
+
+    pub fn new_u16() -> Result<u16, ErrorRandom> {
+        let random_1 = Self::new()?.random() as u16; 
+        let random_2 = Self::new()?.random() as u16;
+        let random_u16 = random_1 << 8 | random_2;
+        Ok(random_u16)
+    }
+
+    pub fn new_u32() -> Result<u32, ErrorRandom> {
+        let random_1 = Self::new_u16()? as u32; 
+        let random_2 = Self::new_u16 as u32;
+        let random_u32 = random_1 << 16 | random_2;
+        Ok(random_u32)
+    }
+
+    pub fn new_u64() -> Result<u64, ErrorRandom> {
+        let random_1 = Self::new_u32()? as u64; 
+        let random_2 = Self::new_u32 as u64;
+        let random_u64 = random_1 << 32 | random_2;
+        Ok(random_u64)
+    }
+
 }
 
 fn main() -> Result<(), ErrorRandom> { 
 
-    let random = Random::new()?; 
-    println!("Random number: {}", &random.random());
+    let random = Random::new_u64()?; 
+    println!("Random number: {:x}", &random);
     Ok(())
 }
