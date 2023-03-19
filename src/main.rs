@@ -6,7 +6,7 @@
 // Implement additional functions 
 // generating not only u8 random numbers but also u16, u32, and u64 together with usize, 
 
-//Add support for Windows too
+//Add support for Windows too using RtlGenRandom()
 
 use std::env::consts::OS;
 use std::fs::File;
