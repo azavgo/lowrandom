@@ -68,17 +68,31 @@ impl Random {
     }
 
     pub fn new_u64() -> Result<u64, ErrorRandom> {
-        let random_1 = Self::new_u32()? as u64; 
-        let random_2 = Self::new_u32 as u64;
-        let random_u64 = random_1 << 32 | random_2;
-        Ok(random_u64)
+        match std::mem::size_of::<&char>() {
+            8         => {
+                            let random_1 = Self::new_u32()? as u64; 
+                            let random_2 = Self::new_u32 as u64;
+                            let random_u64 = random_1 << 32 | random_2;
+                            Ok(random_u64)
+                        },
+            4 => Err(ErrorRandom::OSError("Not implemented for 32-bit architecture".to_string())), 
+            _ => Err(ErrorRandom::OSError("Not implemented for this architecture".to_string())),
+        }
     }
 
+    pub fn new_usize() -> Result<usize, ErrorRandom> {
+        match std::mem::size_of::<&char>() {
+            8 => Ok(Self::new_u64()? as usize),
+            4 => Ok(Self::new_u32()? as usize), 
+            _ => Err(ErrorRandom::OSError("Not implemented for this architecture".to_string())),
+        }
+    }
 }
 
 fn main() -> Result<(), ErrorRandom> { 
 
-    let random = Random::new_u64()?; 
+    let random = Random::new_usize()?; 
     println!("Random number: {:x}", &random);
+
     Ok(())
 }
