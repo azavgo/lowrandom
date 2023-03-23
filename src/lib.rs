@@ -89,10 +89,3 @@ impl Random {
     }
 }
 
-fn main() -> Result<(), ErrorRandom> { 
-
-    let random = Random::new_usize()?; 
-    println!("Random number: {:x}", &random);
-
-    Ok(())
-}
