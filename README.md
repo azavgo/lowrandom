@@ -19,12 +19,12 @@ lowrandom library reads "/dev/urandom" file, hence its functionality is limited 
 ```
 2. Generates a u32 random number and prints it to the terminal:  
 ```Rust
-    use lowrandom::*;
+use lowrandom::*;
 
-    fn main() -> Result<(), ErrorRandom> { 
+fn main() -> Result<(), ErrorRandom> { 
 
     let random_u32 = Random::new_u32()?; 
-    println!("Random u32 number: {:x}", &random_u32);
+    println!("Random u32 number: {}", &random_u32);
 
     Ok(())
 }
